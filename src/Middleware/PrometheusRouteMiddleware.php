@@ -50,16 +50,18 @@ class PrometheusRouteMiddleware
             'statusCode' => (string)$response->getStatusCode()
         ];
 
+        $nameSpace = env('PROMETHEUS_NAMESPACE', '');
+
         Counter::add(
             1,
-            'request',
+            implode('_',[$nameSpace,'request']),
             $labels,
             'Request are made'
         );
 
         Histogram::record(
             $duration,
-            'request_time',
+            implode('_',[$nameSpace,'request_time']),
             $labels,
             'Time request made'
         );
